@@ -5,7 +5,7 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
-// core components/views for Admin layout
+// core components/views for Home layout
 import DashboardPage from "./views/Dashboard/Dashboard.js";
 import UserProfile from "./views/UserProfile/UserProfile.js";
 import TableList from "./views/TableList/TableList.js";
@@ -22,23 +22,23 @@ const dashboardRoutes = [
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/user",
-    name: "User Profile",
+    name: "Profile",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/table",
-    name: "Table List",
+    name: "Current Games",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: TableList,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/typography",
@@ -46,7 +46,7 @@ const dashboardRoutes = [
     rtlName: "طباعة",
     icon: LibraryBooks,
     component: Typography,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/icons",
@@ -54,7 +54,7 @@ const dashboardRoutes = [
     rtlName: "الرموز",
     icon: BubbleChart,
     component: Icons,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/maps",
@@ -62,7 +62,7 @@ const dashboardRoutes = [
     rtlName: "خرائط",
     icon: LocationOn,
     component: Maps,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/notifications",
@@ -70,7 +70,7 @@ const dashboardRoutes = [
     rtlName: "إخطارات",
     icon: Notifications,
     component: NotificationsPage,
-    layout: "/admin"
+    layout: "/home"
   },
   {
     path: "/new-game",
@@ -78,7 +78,7 @@ const dashboardRoutes = [
     rtlName: "التطور للاحترافية",
     icon: Unarchive,
     component: UpgradeToPro,
-    layout: "/admin"
+    layout: "/home"
   }
 ];
 

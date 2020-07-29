@@ -23,7 +23,7 @@ let ps;
 const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/home") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -34,20 +34,20 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/admin" to="/admin/dashboard" />
+    <Redirect from="/home" to="/home" />
   </Switch>
 );
 
 const useStyles = makeStyles(styles);
 
-export default function Admin({ ...rest }) {
+export default function Home({ ...rest }) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
   // states and functions
   const [image, setImage] = React.useState(bgImage);
-  const [color, setColor] = React.useState("blue");
+  const [color, setColor] = React.useState("green");
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleImageClick = image => {
@@ -119,14 +119,6 @@ export default function Admin({ ...rest }) {
           <div className={classes.map}>{switchRoutes}</div>
         )}
         {getRoute() ? <Footer /> : null}
-        <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          bgColor={color}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-        />
       </div>
     </div>
   );
