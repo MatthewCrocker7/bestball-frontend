@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import environment from '../environment';
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -44,12 +46,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Register() {
+const Register = () => {
     const classes = useStyles();
+    const [formData, updateFormData] = React.useState({});
+
+    const handleChange = (e) => {
+        const newData = Object.assign({}, formData);
+        newData[e.target.id] = e.target.value;
+        updateFormData(newData);
+    };
 
     const handleSubmit = async (e) => {
-        // e.preventDefault();
-        console.log("Register!");
+        e.preventDefault();
+        console.log("Register: ", environment);
+        console.log('Form: ', formData);
+
+
     };
 
     return (
@@ -62,7 +74,7 @@ export default function Register() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <form className={classes.form} noValidate onChange={handleChange} onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -151,3 +163,5 @@ export default function Register() {
         </Container>
     );
 };
+
+export default Register;

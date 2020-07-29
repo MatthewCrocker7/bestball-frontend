@@ -1,10 +1,10 @@
 {
-  "name": "material-dashboard-react",
-  "homepage": "https://github.com/creativetimofficial/material-dashboard-react",
+  "name": "bestball-frontend",
+  "homepage": "https://github.com/MatthewCrocker7/bestball-frontend",
   "authors": [
-    "creative-tim"
+    "Matthew Crocker"
   ],
-  "description": "A Badass Material-UI Kit based on Material Design",
+  "description": "Frontend for bb.golf",
   "main": "public/index.html",
   "keywords": [
     "material",
@@ -15,7 +15,7 @@
     "google",
     "twitter"
   ],
-  "license": "Creative TIM License",
+  "license": "Matthew Crocker",
   "ignore": [
     "**/.*",
     "node_modules",

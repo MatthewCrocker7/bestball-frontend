@@ -52,6 +52,7 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Login!");
+        window.location.href = "http://localhost:3000/home";
     };
 
     return (

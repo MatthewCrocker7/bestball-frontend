@@ -9,7 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "../components/Navbars/Navbar.js";
 import Footer from "../components/Footer/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
-import FixedPlugin from "../components/FixedPlugin/FixedPlugin.js";
 
 import routes from "../routes.js";
 
@@ -34,7 +33,7 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/home" to="/home" />
+    <Redirect from="/home" to="/home/dashboard" />
   </Switch>
 );
 
@@ -67,7 +66,7 @@ export default function Home({ ...rest }) {
     setMobileOpen(!mobileOpen);
   };
   const getRoute = () => {
-    return window.location.pathname !== "/admin/maps";
+    return window.location.pathname !== "/home/maps";
   };
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
@@ -96,7 +95,7 @@ export default function Home({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={"Creative Tim"}
+        logoText={"BestBall.golf"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
