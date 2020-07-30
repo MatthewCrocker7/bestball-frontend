@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import environment from '../environment';
+import api from '../utils/api';
+import HttpService from '../utils/HttpService';
 
 function Copyright() {
     return (
@@ -58,10 +59,20 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Register: ", environment);
         console.log('Form: ', formData);
 
+        HttpService.post(api.register, formData, handleSuccess, handleError);
+    };
 
+    const handleSuccess = (data, status) => {
+        console.log('Success!');
+        console.log('Data: ', data);
+        console.log('Status: ', status);
+    };
+
+    const handleError = (error) => {
+        console.log('Error: ', error);
+        console.log('Response: ', error.response);
     };
 
     return (
@@ -135,6 +146,18 @@ const Register = () => {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                autoComplete="current-password"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="confirmPassword"
+                                label="Confirm Password"
+                                type="password"
+                                id="confirmPassword"
                                 autoComplete="current-password"
                             />
                         </Grid>
