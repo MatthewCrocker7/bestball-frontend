@@ -71,7 +71,7 @@ export default function Login() {
     const handleSuccess = (response, authToken) => {
         authentication.registerSuccessfulLogin(authToken);
 
-        history.push("/home");
+        history.push("/");
     };
 
     const handleError = (error) => {

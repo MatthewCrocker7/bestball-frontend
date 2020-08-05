@@ -19,7 +19,7 @@ class AuthenticationService {
         cookies.remove('auth_token', {
             path: '/'
         });
-        console.log('Removed cookie: ', cookies.get('auth_token'));
+        console.log('Logout successful!');
     };
 
     isAuthenticated = () => {

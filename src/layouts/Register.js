@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import { useHistory } from "react-router-dom";
 import api from '../utils/api';
 import HttpService from '../utils/HttpService';
 
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
     const classes = useStyles();
+    const history = useHistory();
     const [formData, updateFormData] = React.useState({});
 
     const handleChange = (e) => {
@@ -65,6 +67,8 @@ const Register = () => {
 
     const handleSuccess = (data, status) => {
         console.log('Registration success!');
+
+        history.push("/login");
     };
 
     const handleError = (error) => {

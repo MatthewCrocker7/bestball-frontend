@@ -19,7 +19,7 @@ ReactDOM.render(
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <ProtectedRoute path="/home" component={Home} />
-        <Redirect from="/" to="/login" />
+        <Redirect from="/" to="/home" />
     </Switch>
   </Router>,
   document.getElementById("root")
