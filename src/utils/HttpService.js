@@ -54,7 +54,7 @@ class HttpService {
                 'Authorization': authToken
             }
         })
-            .then((response) => successCallBack(response.data, response.status))
+            .then((response) => successCallBack(response, authToken))
             .catch((error) => errorCallBack(error));
     }
 

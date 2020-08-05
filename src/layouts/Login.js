@@ -68,8 +68,8 @@ export default function Login() {
         HttpService.post(api.login, formData, handleSuccess, handleError);
     };
 
-    const handleSuccess = (data, status) => {
-        authentication.registerSuccessfulLogin();
+    const handleSuccess = (response, authToken) => {
+        authentication.registerSuccessfulLogin(authToken);
 
         history.push("/home");
     };

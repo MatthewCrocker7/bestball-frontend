@@ -4,8 +4,15 @@ const cookies = new Cookies();
 
 class AuthenticationService {
 
-    registerSuccessfulLogin = () => {
+    registerSuccessfulLogin = (authToken) => {
         console.log('Login successful!');
+
+        const expires = 60 * 60 * 1000;
+        const oneHour = new Date(new Date().getTime() + expires);
+        cookies.set('auth_token', authToken, {
+            path: '/',
+            expires: oneHour
+        });
     };
 
     registerSuccessfulLogout = () => {
@@ -21,15 +28,7 @@ class AuthenticationService {
 
     buildNewAuthToken = (data) => {
         if(data.email && data.password) {
-            const authToken = 'Basic ' + window.btoa(data.email + ':' + data.password);
-            const expires = 60 * 60 * 1000;
-            const oneHour = new Date(new Date().getTime() + expires);
-            cookies.set('auth_token', authToken, {
-                path: '/',
-                expires: oneHour
-            });
-
-            return authToken;
+            return 'Basic ' + window.btoa(data.email + ':' + data.password);
         } else {
             return null;
         }
