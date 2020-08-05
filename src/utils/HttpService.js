@@ -32,6 +32,7 @@ class HttpService {
     };
 
     register = (url, data, successCallBack, errorCallBack) => {
+        console.log(environment.backend_url + ' ' + url);
         return this.service.request({
             url,
             data,

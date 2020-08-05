@@ -76,6 +76,7 @@ export default function Login() {
 
     const handleError = (error) => {
         console.log('Error: ', error);
+        console.log(error.response);
     };
 
     return (
