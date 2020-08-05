@@ -19,7 +19,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                BB.golf
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -59,20 +59,16 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form: ', formData);
 
-        HttpService.post(api.register, formData, handleSuccess, handleError);
+        HttpService.register(api.register, formData, handleSuccess, handleError);
     };
 
     const handleSuccess = (data, status) => {
-        console.log('Success!');
-        console.log('Data: ', data);
-        console.log('Status: ', status);
+        console.log('Registration success!');
     };
 
     const handleError = (error) => {
         console.log('Error: ', error);
-        console.log('Response: ', error.response);
     };
 
     return (

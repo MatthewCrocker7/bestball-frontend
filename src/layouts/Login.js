@@ -13,12 +13,17 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import { useHistory } from "react-router-dom";
+import HttpService from "../utils/HttpService";
+import { authentication } from '../utils/AuthenticationService';
+import api from "../utils/api";
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                BB.golf
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -48,11 +53,29 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
+    const history = useHistory();
+    const [formData, updateFormData] = React.useState({});
+
+    const handleChange = (e) => {
+        const newData = Object.assign({}, formData);
+        newData[e.target.id] = e.target.value;
+        updateFormData(newData);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Login!");
-        window.location.href = "http://localhost:3000/home";
+
+        HttpService.post(api.login, formData, handleSuccess, handleError);
+    };
+
+    const handleSuccess = (data, status) => {
+        authentication.registerSuccessfulLogin();
+
+        history.push("/home");
+    };
+
+    const handleError = (error) => {
+        console.log('Error: ', error);
     };
 
     return (
@@ -65,7 +88,7 @@ export default function Login() {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <form className={classes.form} noValidate onChange={handleChange} onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"

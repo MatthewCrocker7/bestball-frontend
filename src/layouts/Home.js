@@ -10,7 +10,7 @@ import Navbar from "../components/Navbars/Navbar.js";
 import Footer from "../components/Footer/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 
-import routes from "../routes.js";
+import routes from "../routes/routes.js";
 
 import styles from "../assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
@@ -45,23 +45,26 @@ export default function Home({ ...rest }) {
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
   // states and functions
-  const [image, setImage] = React.useState(bgImage);
-  const [color, setColor] = React.useState("green");
-  const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
+  // const [image, setImage] = React.useState(bgImage);
+  const image = bgImage;
+  // const [color, setColor] = React.useState("green");
+  const color = 'green';
+  // const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleImageClick = image => {
-    setImage(image);
-  };
-  const handleColorClick = color => {
-    setColor(color);
-  };
-  const handleFixedClick = () => {
-    if (fixedClasses === "dropdown") {
-      setFixedClasses("dropdown show");
-    } else {
-      setFixedClasses("dropdown");
-    }
-  };
+
+  // const handleImageClick = image => {
+  //   setImage(image);
+  // };
+  // const handleColorClick = color => {
+  //   setColor(color);
+  // };
+  // const handleFixedClick = () => {
+  //   if (fixedClasses === "dropdown") {
+  //     setFixedClasses("dropdown show");
+  //   } else {
+  //     setFixedClasses("dropdown");
+  //   }
+  // };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
