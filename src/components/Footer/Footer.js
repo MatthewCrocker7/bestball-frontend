@@ -24,17 +24,12 @@ export default function Footer(props) {
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a href="#company" className={classes.block}>
-                Company
+                Contact
               </a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
               <a href="#portfolio" className={classes.block}>
-                Portfolio
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#blog" className={classes.block}>
-                Blog
+                FAQ
               </a>
             </ListItem>
           </List>
