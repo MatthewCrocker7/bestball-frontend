@@ -65,11 +65,11 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        HttpService.post(api.login, formData, handleSuccess, handleError);
+        HttpService.login(api.login, formData, handleSuccess, handleError);
     };
 
-    const handleSuccess = (response, authToken) => {
-        authentication.registerSuccessfulLogin(authToken);
+    const handleSuccess = (response, authToken, email) => {
+        authentication.registerSuccessfulLogin(authToken, email);
 
         history.push("/");
     };

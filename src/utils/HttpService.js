@@ -43,6 +43,21 @@ class HttpService {
             .catch((error) => errorCallBack(error));
     };
 
+    login = (url, data, successCallBack, errorCallBack) => {
+        const authToken = authentication.getAuthToken(data);
+        return this.service.request({
+            url,
+            data,
+            method: 'POST',
+            responseType: 'json',
+            headers: {
+                'Authorization': authToken
+            }
+        })
+            .then((response) => successCallBack(response, authToken, data.email))
+            .catch((error) => errorCallBack(error));
+    };
+
     post = (url, data, successCallBack, errorCallBack) => {
         const authToken = authentication.getAuthToken(data);
         return this.service.request({
@@ -56,7 +71,22 @@ class HttpService {
         })
             .then((response) => successCallBack(response, authToken))
             .catch((error) => errorCallBack(error));
-    }
+    };
+
+    get = (url, data, successCallBack, errorCallBack) => {
+        const authToken = authentication.getAuthToken(data);
+        return this.service.request({
+            url,
+            data,
+            method: 'GET',
+            responseType: 'json',
+            headers: {
+                'Authorization': authToken
+            }
+        })
+            .then((response) => successCallBack(response, authToken))
+            .catch((error) => errorCallBack(error));
+    };
 
 }
 

@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 class AuthenticationService {
 
-    registerSuccessfulLogin = (authToken) => {
+    registerSuccessfulLogin = (authToken, email) => {
         console.log('Login successful!');
 
         const expires = 60 * 60 * 1000;
@@ -13,10 +13,17 @@ class AuthenticationService {
             path: '/',
             expires: oneHour
         });
+        cookies.set('email', email, {
+            path: '/',
+            expires: oneHour
+        });
     };
 
     registerSuccessfulLogout = () => {
         cookies.remove('auth_token', {
+            path: '/'
+        });
+        cookies.remove('email', {
             path: '/'
         });
         console.log('Logout successful!');
