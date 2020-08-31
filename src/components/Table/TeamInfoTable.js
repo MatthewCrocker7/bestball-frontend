@@ -10,11 +10,32 @@ import TableCell from "@material-ui/core/TableCell";
 // core components
 import styles from "../../assets/jss/material-dashboard-react/components/tableStyle.js";
 
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles(styles);
 
-export default function CustomTable(props) {
+const TeamInfoTable = (props) => {
   const classes = useStyles();
+  const history = useHistory();
   const { tableHead, tableData, tableHeaderColor } = props;
+
+  const handleRowSelect = (e, info) => {
+    // e.preventDefault();
+    console.log(info);
+    if (info.isDraft) {
+      console.log('is draft');
+      // history.push(`/home/drafts/draft?draftId=${info.draftId}`);
+      history.push(`/home/drafts/draft?draftId=${info.draftId}`,
+          { draftId: info.draftId }
+      );
+    } else {
+      history.push({
+          pathname: `/home/games/game?gameId=${info.gameId}`,
+          state: info.gameId
+      });
+    }
+
+  };
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -35,13 +56,14 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
-          {tableData.map((prop, key) => {
+          {tableData.map((row, key) => {
             return (
-              <TableRow key={key} className={classes.tableBodyRow}>
-                {prop.map((prop, key) => {
+              <TableRow key={key} hover={true} className={classes.tableBodyRow}
+                        value={row} onClick={(event) => handleRowSelect(event, row)}>
+                {row.cellData.map((cell, key) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key}>
-                      {prop}
+                    <TableCell className={classes.tableCell} key={key} info={row}>
+                      {cell}
                     </TableCell>
                   );
                 })}
@@ -52,13 +74,13 @@ export default function CustomTable(props) {
       </Table>
     </div>
   );
-}
+};
 
-CustomTable.defaultProps = {
+TeamInfoTable.defaultProps = {
   tableHeaderColor: "gray"
 };
 
-CustomTable.propTypes = {
+TeamInfoTable.propTypes = {
   tableHeaderColor: PropTypes.oneOf([
     "warning",
     "primary",
@@ -69,5 +91,6 @@ CustomTable.propTypes = {
     "gray"
   ]),
   tableHead: PropTypes.arrayOf(PropTypes.string),
-  tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 };
+
+export default TeamInfoTable;

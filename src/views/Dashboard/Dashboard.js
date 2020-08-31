@@ -19,7 +19,7 @@ import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "../../components/Grid/GridItem.js";
 import GridContainer from "../../components/Grid/GridContainer.js";
-import Table from "../../components/Table/Table.js";
+import Table from "../../components/Table/TeamInfoTable.js";
 import Tasks from "../../components/Tasks/Tasks.js";
 import CustomTabs from "../../components/CustomTabs/CustomTabs.js";
 import Danger from "../../components/Typography/Danger.js";
@@ -246,16 +246,6 @@ export default function Dashboard() {
               </p>
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
             </CardBody>
           </Card>
         </GridItem>

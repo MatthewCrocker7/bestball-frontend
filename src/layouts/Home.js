@@ -40,31 +40,12 @@ const switchRoutes = (
 const useStyles = makeStyles(styles);
 
 export default function Home({ ...rest }) {
-  // styles
   const classes = useStyles();
-  // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
-  // states and functions
-  // const [image, setImage] = React.useState(bgImage);
   const image = bgImage;
-  // const [color, setColor] = React.useState("green");
   const color = 'green';
-  // const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  // const handleImageClick = image => {
-  //   setImage(image);
-  // };
-  // const handleColorClick = color => {
-  //   setColor(color);
-  // };
-  // const handleFixedClick = () => {
-  //   if (fixedClasses === "dropdown") {
-  //     setFixedClasses("dropdown show");
-  //   } else {
-  //     setFixedClasses("dropdown");
-  //   }
-  // };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };

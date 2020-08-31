@@ -23,8 +23,6 @@ import Select from '@material-ui/core/Select';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
 
@@ -139,7 +137,6 @@ const NewGame = () => {
   const [tournament, setTournament] = React.useState();
   const [tournaments, setTournaments] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState();//React.useState(new Date('2014-08-18T21:11:54'));
-  const [selectedTime, setSelectedTime] = React.useState();
   const [formData, updateFormData] = React.useState({
     email: cookies.get('email'),
     gameType: 'public',
