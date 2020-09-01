@@ -8,7 +8,7 @@ const urls = {
     // Game
     newGame: '/api/game/newGame',
     // Draft
-    getPlayerDrafts: '/api/drafts/',
+    loadDraft: '/api/draft/loadDraft',
     // PGA
     upcomingTournaments: '/api/pga/upcomingTournaments'
 };

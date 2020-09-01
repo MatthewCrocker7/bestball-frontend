@@ -46,10 +46,10 @@ const DraftContainer = () => {
   const classes = useStyles();
 
     return (
-        <switch>
+        <Switch>
           <Route exact path="/home/drafts" component={Drafts}/>
           <Route path="/home/drafts/draft" component={LiveDraft}/>
-        </switch>
+        </Switch>
     );
 };
 
