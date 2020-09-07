@@ -58,7 +58,7 @@ const Drafts = () => {
 
     React.useEffect(() => {
         HttpService.post(api.getTeamInfo, email, getDraftsSuccess, getDraftsError);
-    });
+    }, []);
 
     const getDraftsSuccess = (data, status) => {
         updateCurrentDrafts(data.data.filter(x => x.draft.draftState !== 'COMPLETE'));

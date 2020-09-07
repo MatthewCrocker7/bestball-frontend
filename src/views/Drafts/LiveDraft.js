@@ -60,7 +60,7 @@ const LiveDraft = (props) => {
     }, []);
 
     const loadDraftSuccess = (data, status) => {
-        console.log('succedss')
+        console.log(data);
     };
 
     const loadDraftError = (error) => {

@@ -20,9 +20,9 @@ const TeamInfoTable = (props) => {
 
   const handleRowSelect = (e, info) => {
     // e.preventDefault();
+      //TODO: This is making a call for each row on page load
     console.log(info);
     if (info.isDraft) {
-      console.log('is draft');
       // history.push(`/home/drafts/draft?draftId=${info.draftId}`);
       history.push(`/home/drafts/draft?draftId=${info.draftId}`,
           { draftId: info.draftId }
