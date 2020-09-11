@@ -1,11 +1,10 @@
 import React from "react";
 import { StickyContainer, Sticky } from 'react-sticky';
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 
 import Cookies  from 'universal-cookie';
 import WebSocketService from "../../utils/WebSocketService";
 import api from "../../utils/api";
-import Grid from '@material-ui/core/Grid';
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Card from "../../components/Card/Card";
@@ -17,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 
 const cookies = new Cookies();
 
-const styles = {
+const styles = () => ({
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
       color: "rgba(255,255,255,.62)",
@@ -51,91 +50,104 @@ const styles = {
         marginTop: 'auto',
         overflowX: 'visible',
     },
-};
+});
 
-const sortPgaPlayers = (pgaPlayers) => {
-    return pgaPlayers.sort((a, b) => (a.rank > b.rank) ? 1 : -1);
-};
-
-const useStyles = makeStyles(styles);
-
-
-const LiveDraft = (props) => {
-    const classes = useStyles();
-    const [draft, updateDraft] = React.useState({});
-    const formData = {
-        email: cookies.get('email'),
-        draftId: props.location.state.draftId
+let client;
+class LiveDraft extends React.Component {
+    constructor(props) {
+        super(props);
+        client = new WebSocketService(api.socketDraft, this.onClientConnect, this.onStompError);
+    }
+    state = {
+        draft: {},
+        formData: {
+            email: cookies.get('email'),
+            draftId: this.props.location.state.draftId
+        }
     };
-    let client;
 
-    React.useEffect(() => {
-        client = new WebSocketService(api.socketDraft, onClientConnect, onStompError);
+    componentDidMount = () => {
 
-        return () => {
-          client.deactivate();
-        };
-    }, [draft.draftVersion]);
+    };
 
-    const clientSubscription = (data) => {
+    componentWillUnmount = () => {
+        client.deactivate();
+    };
+
+    clientSubscription = (data) => {
         console.log('Draft refreshed');
         const result = JSON.parse(data.body);
         console.log(result);
-        updateDraft(result);
+        this.setState({ draft: result });
     };
 
-    const onClientConnect = () => {
+    onClientConnect = () => {
         console.log("Draft client connected");
-        const draftId = formData.draftId;
-        client.subscribe(api.refreshDraft(draftId), clientSubscription);
-        client.publish(api.loadDraft(draftId), formData);
+        const draftId = this.state.formData.draftId;
+        client.subscribe(api.refreshDraft(draftId), this.clientSubscription);
+        client.publish(api.loadDraft(draftId), this.state.formData);
     };
 
-    const onStompError = () => {
+    onStompError = () => {
         console.log('Client error');
     };
 
+    render = () => {
+        const { classes } = this.props;
+        const { draft } = this.state;
+        const offSet = 200;
+        return (
 
-
-    return (
-        <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
-                <Card>
-                    <CardHeader plain color="success">
-                        <h4 className={classes.cardTitleWhite}>
-                            Draft - The Masters 2020
-                        </h4>
-                    </CardHeader>
-                    <CardBody>
-                        <StickyContainer>
+            <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                    <Card>
+                        <CardHeader plain color="success">
+                            <h4 className={classes.cardTitleWhite}>
+                                Draft - The Masters 2020
+                            </h4>
+                        </CardHeader>
+                        <CardBody>
+                            <StickyContainer>
                             <GridContainer>
                                 <GridItem xs={12} sm={4}>
-                                    <Sticky>
-                                    {({ style }) =>
-                                        <DraftOrder style={{ ...style}}/>
-                                    }
+                                    <Sticky topOffset={-offSet}>
+                                        {({ style, isSticky, distanceFromTop }) =>
+                                            <Box style={{ ...style, marginTop: isSticky ? `${offSet}px` : '0px' }} className={classes.paperStyle}>
+                                                <h1>{distanceFromTop}</h1>
+                                                <DraftOrder/>
+                                            </Box>
+                                        }
                                     </Sticky>
                                 </GridItem>
                                 <GridItem xs={12} sm={4}>
                                     <DraftBoard draftBoard={draft.availablePgaPlayers ? draft.availablePgaPlayers : []} />
                                 </GridItem>
                                 <GridItem xs={12} sm={4}>
-                                    <PgaPlayerInfo />
+                                    <Sticky topOffset={-offSet}>
+                                        {({ style, isSticky }) =>
+                                            <div style={{ ...style, marginTop: isSticky ? `${offSet}px` : '0px' }} className={classes.paperStyle}>
+                                                <PgaPlayerInfo />
+                                            </div>
+                                        }
+                                    </Sticky>
                                 </GridItem>
                             </GridContainer>
-                        </StickyContainer>
-                    </CardBody>
-                </Card>
-            </GridItem>
-        </GridContainer>
-    );
+                            </StickyContainer>
+                        </CardBody>
+                    </Card>
+                </GridItem>
+            </GridContainer>
+
+
+        );
+    };
 };
 
-const DraftOrder = (props) => {
+const DraftOrder = React.forwardRef((props, ref) => {
     return (
         <h1>draft column</h1>
     );
-};
+});
 
 const PgaPlayers = (props) => {
     return (
@@ -150,6 +162,6 @@ const PgaPlayerInfo = (props) => {
 
 };
 
-export default LiveDraft;
+export default withStyles(styles)(LiveDraft);
 
 

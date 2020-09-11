@@ -12,7 +12,7 @@ import styles from "../../assets/jss/material-dashboard-react/components/cardHea
 
 const useStyles = makeStyles(styles);
 
-export default function CardHeader(props) {
+const CardHeader = (props) => {
   const classes = useStyles();
   const { className, children, color, plain, stats, icon, ...rest } = props;
   const cardHeaderClasses = classNames({
@@ -28,7 +28,7 @@ export default function CardHeader(props) {
       {children}
     </div>
   );
-}
+};
 
 CardHeader.propTypes = {
   className: PropTypes.string,
@@ -45,3 +45,5 @@ CardHeader.propTypes = {
   icon: PropTypes.bool,
   children: PropTypes.node
 };
+
+export default CardHeader;
