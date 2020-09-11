@@ -7,9 +7,18 @@ const urls = {
     getTeamInfo: '/api/info/getTeamInfo',
     // Game
     newGame: '/api/game/newGame',
-    // Draft
-    loadDraft: '/api/draft/loadDraft',
     // PGA
-    upcomingTournaments: '/api/pga/upcomingTournaments'
+    upcomingTournaments: '/api/pga/upcomingTournaments',
+    // Socket Connection
+    socketDraft: '/connect/draft',
+    socketGame: '/connect/game',
+    // Socket Subscriptions
+    refreshDraft: (draftId) => {
+        return `/ui/refreshDraft/${draftId}`;
+    },
+    // Socket Publishers
+    loadDraft: (draftId) => {
+        return `/draft/loadDraft/${draftId}`;
+    }
 };
 module.exports = urls;

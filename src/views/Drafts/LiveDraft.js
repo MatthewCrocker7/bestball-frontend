@@ -1,17 +1,19 @@
 import React from "react";
-import moment from 'moment';
-// @material-ui/core components
+import { StickyContainer, Sticky } from 'react-sticky';
 import { makeStyles } from "@material-ui/core/styles";
-// core components
 
 import Cookies  from 'universal-cookie';
-import HttpService from "../../utils/HttpService";
+import WebSocketService from "../../utils/WebSocketService";
 import api from "../../utils/api";
+import Grid from '@material-ui/core/Grid';
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
 import CardBody from "../../components/Card/CardBody";
+import DraftBoard from "../../components/Draft/DraftBoard";
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 
 const cookies = new Cookies();
 
@@ -42,10 +44,21 @@ const styles = {
       fontWeight: "400",
       lineHeight: "1"
     }
-  }
+  },
+    paperStyle: {
+        width: 'auto',
+        height: 'auto',
+        marginTop: 'auto',
+        overflowX: 'visible',
+    },
+};
+
+const sortPgaPlayers = (pgaPlayers) => {
+    return pgaPlayers.sort((a, b) => (a.rank > b.rank) ? 1 : -1);
 };
 
 const useStyles = makeStyles(styles);
+
 
 const LiveDraft = (props) => {
     const classes = useStyles();
@@ -54,18 +67,35 @@ const LiveDraft = (props) => {
         email: cookies.get('email'),
         draftId: props.location.state.draftId
     };
+    let client;
 
     React.useEffect(() => {
-        HttpService.post(api.loadDraft, formData, loadDraftSuccess, loadDraftError);
-    }, []);
+        client = new WebSocketService(api.socketDraft, onClientConnect, onStompError);
 
-    const loadDraftSuccess = (data, status) => {
-        console.log(data);
+        return () => {
+          client.deactivate();
+        };
+    }, [draft.draftVersion]);
+
+    const clientSubscription = (data) => {
+        console.log('Draft refreshed');
+        const result = JSON.parse(data.body);
+        console.log(result);
+        updateDraft(result);
     };
 
-    const loadDraftError = (error) => {
-        console.log('Error: ', error);
+    const onClientConnect = () => {
+        console.log("Draft client connected");
+        const draftId = formData.draftId;
+        client.subscribe(api.refreshDraft(draftId), clientSubscription);
+        client.publish(api.loadDraft(draftId), formData);
     };
+
+    const onStompError = () => {
+        console.log('Client error');
+    };
+
+
 
     return (
         <GridContainer>
@@ -77,17 +107,23 @@ const LiveDraft = (props) => {
                         </h4>
                     </CardHeader>
                     <CardBody>
-                        <GridContainer>
-                            <GridItem xs={12} sm={4}>
-                                <DraftOrder />
-                            </GridItem>
-                            <GridItem xs={12} sm={4}>
-                                <PgaPlayers />
-                            </GridItem>
-                            <GridItem xs={12} sm={4}>
-                                <PgaPlayerInfo />
-                            </GridItem>
-                        </GridContainer>
+                        <StickyContainer>
+                            <GridContainer>
+                                <GridItem xs={12} sm={4}>
+                                    <Sticky>
+                                    {({ style }) =>
+                                        <DraftOrder style={{ ...style}}/>
+                                    }
+                                    </Sticky>
+                                </GridItem>
+                                <GridItem xs={12} sm={4}>
+                                    <DraftBoard draftBoard={draft.availablePgaPlayers ? draft.availablePgaPlayers : []} />
+                                </GridItem>
+                                <GridItem xs={12} sm={4}>
+                                    <PgaPlayerInfo />
+                                </GridItem>
+                            </GridContainer>
+                        </StickyContainer>
                     </CardBody>
                 </Card>
             </GridItem>
