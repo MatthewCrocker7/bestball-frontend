@@ -6,6 +6,7 @@ import { successColor } from "../../assets/jss/material-dashboard-react.js";
 
 import Cookies  from 'universal-cookie';
 import WebSocketService from "../../utils/WebSocketService";
+import HttpService from "../../utils/HttpService";
 import api from "../../utils/api";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
@@ -15,6 +16,7 @@ import CardBody from "../../components/Card/CardBody";
 import DraftBoard from "../../components/Draft/DraftBoard";
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -24,6 +26,7 @@ import Table from "../../components/Table/DraftTable.js";
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
+import moment from "../NewGame/NewGame";
 
 const cookies = new Cookies();
 
@@ -68,98 +71,208 @@ const styles = () => ({
         margin: 'auto',
         background: successColor[0],
     },
+    inviteDiv: {
+        width: 'auto',
+        height: 'auto',
+        marginTop: '10px'
+    },
+    textField: {
+        minWidth: 230,
+    },
     formControl: {
         minWidth: 120,
     },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: `${successColor[0]} !important`
+    }
 });
 
+const useStyles = makeStyles(styles);
 let client;
-class LiveDraft extends React.Component {
-    constructor(props) {
-        super(props);
-        client = new WebSocketService(api.socketDraft, this.onClientConnect, this.onStompError);
-    }
-    state = {
-        draft: {},
-        formData: {
-            email: cookies.get('email'),
-            draftId: this.props.location.state.draftId
-        }
-    };
 
-    componentDidMount = () => {
+const LiveDraft = (props) => {
+    const classes = useStyles();
+    const offSet = 40;
+    const [draft, updateDraft] = React.useState({});
+    const [formData] = React.useState({
+        email: cookies.get('email'),
+        draftId: props.location.state.draftId
+    });
+    const [golfer, updateGolfer] = React.useState({});
 
-    };
 
-    componentWillUnmount = () => {
-        client.deactivate();
-    };
+    React.useEffect(() => {
+        client = new WebSocketService(api.socketDraft, onClientConnect, onStompError);
 
-    clientSubscription = (data) => {
+        return () => {
+          client.deactivate();
+        };
+    }, [draft.draftVersion]);
+
+    const clientSubscription = (data) => {
         console.log('Draft refreshed');
         const result = JSON.parse(data.body);
         console.log(result);
-        this.setState({ draft: result });
+        updateDraft(result);
     };
 
-    onClientConnect = () => {
+    const onClientConnect = () => {
         console.log("Draft client connected");
-        const draftId = this.state.formData.draftId;
-        client.subscribe(api.refreshDraft(draftId), this.clientSubscription);
-        client.publish(api.loadDraft(draftId), this.state.formData);
+        const draftId = formData.draftId;
+        client.subscribe(api.refreshDraft(draftId), clientSubscription);
+        client.publish(api.loadDraft(draftId), formData);
     };
 
-    onStompError = () => {
+    const onStompError = () => {
         console.log('Client error');
     };
 
-    render = () => {
-        const { classes } = this.props;
-        const { draft, formData } = this.state;
-        const offSet = 40;
-        return (
-
-            <div className="cardContainer">
-            <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                    <Card>
-                        <CardHeader plain color="success">
-                            <h4 className={classes.cardTitleWhite}>
-                                Draft - The Masters 2020
-                            </h4>
-                        </CardHeader>
-                        <CardBody>
-                            <div className="bodyContainer">
-                            <GridContainer>
-                                <GridItem xs={12} sm={5}>
-                                    <Sticky topOffset={-offSet} scrollElement=".bodyContainer">
-                                        <DraftOrder classes={classes} draft={draft} email={formData.email} />
-                                        <Roster classes={classes} draft={draft} email={formData.email} />
-                                    </Sticky>
-                                </GridItem>
-                                <GridItem xs={12} sm={2}>
-                                    <DraftBoard draftBoard={draft.availablePgaPlayers ? draft.availablePgaPlayers : []} />
-                                </GridItem>
-                                <GridItem xs={12} sm={5}>
-                                    <Sticky topOffset={-offSet} scrollElement=".bodyContainer">
-                                        <PgaPlayerInfo />
-                                    </Sticky>
-                                </GridItem>
-                            </GridContainer>
-                            </div>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </GridContainer>
-            </div>
-
-        );
+    const handleSelect = (event, name, rank, id) => {
+        updateGolfer({
+            name: name,
+            playerId: id,
+            rank: rank
+        });
     };
+
+    const handleDraft = () => {
+        console.log('Drafting: ', golfer);
+        const draftId = formData.draftId;
+
+        client.publish(api.draftPlayer(draftId, golfer.playerId), formData);
+    };
+
+    return (
+        <div className="cardContainer">
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+                <Card>
+                    <CardHeader plain color="success">
+                        <h4 className={classes.cardTitleWhite}>
+                            Draft - The Masters 2020
+                        </h4>
+                    </CardHeader>
+                    <CardBody>
+                        {draft.draftState === 'NOT_STARTED' ?
+                            <NotStarted classes={classes} draft={draft} location={props.location} />
+                            :
+                            <div className="bodyContainer">
+                                <GridContainer>
+                                    <GridItem xs={12} sm={5}>
+                                        <Sticky topOffset={-offSet} scrollElement=".bodyContainer">
+                                            <DraftOrder classes={classes} draft={draft} email={formData.email}
+                                                        golfer={golfer} handleDraft={handleDraft}/>
+                                            <Roster classes={classes} draft={draft}/>
+                                        </Sticky>
+                                    </GridItem>
+                                    <GridItem xs={12} sm={2}>
+                                        <DraftBoard handleSelect={handleSelect}
+                                                    draftBoard={draft.availablePgaPlayers ? draft.availablePgaPlayers : []}/>
+                                    </GridItem>
+                                    <GridItem xs={12} sm={5}>
+                                        <Sticky topOffset={-offSet} scrollElement=".bodyContainer">
+                                            <PgaPlayerInfo/>
+                                        </Sticky>
+                                    </GridItem>
+                                </GridContainer>
+                            </div>
+                        }
+                    </CardBody>
+                </Card>
+            </GridItem>
+        </GridContainer>
+        </div>
+
+    );
+};
+
+const NotStarted = (props) => {
+    const { classes, draft, location } = props;
+    const [formData, updateFormData] = React.useState({
+        email: cookies.get('email'),
+        draftId: location.state.draftId,
+        inviteEmail: ''
+    });
+
+    const handleChange = (e) => {
+        const newData = Object.assign({}, formData);
+        newData.inviteEmail = e.target.value;
+        updateFormData(newData);
+    };
+
+    const handleInvite = () => {
+        console.log('Invite sent to ', formData.inviteEmail);
+        HttpService.post(api.addToDraft, formData, handleSuccess, handleError);
+    };
+
+    const handleSuccess = (data, status) => {
+        console.log('Registration success!');
+
+    };
+
+    const handleError = (error) => {
+        console.log('Error: ', error);
+    };
+
+    const draftIsFull = (draft.teams.length === draft.maxPlayers);
+
+    return (
+        <Grid container alignItems="center" spacing={3} className={classes.grid}>
+            <Grid item xs={12} sm={12}>
+                <Typography component="h5" variant="h5" align="center" className={classes.font}>
+                    Draft will begin at {draft.startTime}
+                </Typography>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+            { !draftIsFull &&
+                <Grid container alignItems="center" spacing={0} className={classes.grid}>
+                    <Grid item xs={12} sm={12}>
+                        <Typography component="h5" variant="h5" align="center" className={classes.font}>
+                            {draft.teams.length} out of {draft.maxPlayers} people have joined this draft. Invite more players?
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4} />
+                    <Grid item xs={12} sm={2}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            className={classes.textField}
+                            onChange={handleChange}
+                            InputProps={{
+                                classes: {
+                                    notchedOutline: classes.notchedOutline
+                                }
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={2}>
+                        <Button variant="contained" size="large" className={classes.button} onClick={handleInvite}>Invite</Button>
+                    </Grid>
+                    <Grid item xs={12} sm={4} />
+                </Grid>
+            }
+            </Grid>
+
+        </Grid>
+
+    );
 };
 
 const DraftOrder = React.forwardRef((props, ref) => {
-    const { classes, draft, email } = props;
+    const { classes, draft, email, golfer, handleDraft } = props;
     if (!draft.currentPick) return;
+    if (draft.draftState === 'COMPLETE') {
+        return (
+            <Typography component="h5" variant="h5" align="center" className={classes.font}>
+                Draft complete
+            </Typography>
+        );
+    }
     const currentPick = draft.draftOrder[draft.currentPick];
     const userTurn = (currentPick.email === email);
 
@@ -171,13 +284,13 @@ const DraftOrder = React.forwardRef((props, ref) => {
                 </Typography>
                 { userTurn &&
                     <Typography component="h5" variant="h5" align="left" className={classes.font}>
-                        Selected: Dustin Johnson
+                        Selected: {golfer.name}
                     </Typography>
                 }
             </Grid>
             <Grid item xs={12} sm={4}>
                 { userTurn &&
-                    <Button variant="contained" size="large" className={classes.button}>Draft</Button>
+                    <Button variant="contained" size="large" className={classes.button} onClick={handleDraft}>Draft</Button>
                 }
             </Grid>
             </Grid>
@@ -185,25 +298,11 @@ const DraftOrder = React.forwardRef((props, ref) => {
 });
 
 const Roster = React.forwardRef((props, ref) => {
-    const { classes, draft, email } = props;
+    const { classes, draft } = props;
 
     if (!draft.teams) return;
 
-    const getDefaultUser = () => {
-        return draft.teams.filter(team => team.userInfo.email === email);
-    };
-
-    const [ defaultUser, updateDefaultUser ] = React.useState(getDefaultUser);
-    const [ value, updateValue ] = React.useState(defaultUser[0].userInfo.userId);
-
-    const handleRosterUpdate = (event) => {
-        updateValue(event.target.value);
-    };
-
-
-
     const mapTeams = (teams) => {
-
         return teams.map(team => ({
             test: true,
             cellData: [
@@ -214,10 +313,6 @@ const Roster = React.forwardRef((props, ref) => {
                 team.golferFour ? team.golferFour.playerName : '-']
         }));
     };
-
-
-
-    // const teams = draft.teams.filter(team => team.userInfo.email !== email);
 
     return (
         <Grid container alignItems="center" alignspacing={3} className={classes.grid}>
@@ -232,26 +327,6 @@ const Roster = React.forwardRef((props, ref) => {
     )
 });
 
-/*
-<Grid container alignItems="center" alignspacing={3} className={classes.grid}>
-            <Grid item xs={12} sm={5}/>
-            <Grid item xs={12} sm={4}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel>Player</InputLabel>
-                  <Select
-                      value={value}
-                      onChange={handleRosterUpdate}
-                  >
-                      {defaultUser.map(user => <MenuItem key={user.userInfo.userId} value={user.userInfo.userId}>{user.userInfo.userName}</MenuItem>)}
-                      {teams.map(team => <MenuItem key={team.userInfo.userId} value={team.userInfo.userId}>{team.userInfo.userName}</MenuItem>)}
-                  </Select>
-                  <FormHelperText>Rosters</FormHelperText>
-                </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={3}/>
-        </Grid>
- */
-
 const PgaPlayerInfo = (props) => {
     return (
         <h1>player info column</h1>
@@ -259,6 +334,6 @@ const PgaPlayerInfo = (props) => {
 
 };
 
-export default withStyles(styles)(LiveDraft);
+export default LiveDraft;
 
 

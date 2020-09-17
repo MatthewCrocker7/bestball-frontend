@@ -23,14 +23,15 @@ const sortPgaPlayers = (pgaPlayers) => {
 const useStyles = makeStyles(styles);
 
 const Draftboard = (props) => {
-    const { draftBoard, style } = props;
+    const { draftBoard, handleSelect, style } = props;
     const [golfer, updateGolfer] = React.useState({});
     const [selectedIndex, updateSelectedIndex] = React.useState(0);
     const classes = useStyles();
 
     const handleListItemClick = (event, name, rank, id) => {
-        updateGolfer({ playerId: id });
+        // updateGolfer({ playerId: id });
         updateSelectedIndex(rank);
+        handleSelect(event, name, rank, id);
     };
 
     return (

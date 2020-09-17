@@ -58,7 +58,7 @@ const TeamInfoTable = (props) => {
         <TableBody>
           {tableData.map((row, key) => {
             return (
-              <TableRow key={key} hover={true} className={classes.tableBodyRow}
+              <TableRow key={key} hover={true} className={classes.teamInfoBodyRow}
                         value={row} onClick={(event) => handleRowSelect(event, row)}>
                 {row.cellData.map((cell, key) => {
                   return (

@@ -83,7 +83,7 @@ const Drafts = () => {
             cellData: [info.game.tournament.name,
                 formatTime(info.draft.startTime),
                 info.draft.draftState,
-                `${info.game.numPlayers}/6`,
+                `${info.draft.teams.length}/${info.game.numPlayers}`,
                 info.game.buyIn,
                 `$${info.game.moneyPot}`]
         }));

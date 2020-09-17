@@ -70,7 +70,17 @@ const tableStyle = theme => ({
     color: "inherit",
     display: "table-row",
     outline: "none",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+  },
+  teamInfoBodyRow: {
+    height: "48px",
+    color: "inherit",
+    display: "table-row",
+    outline: "none",
+    verticalAlign: "middle",
+    '&:hover': {
+      cursor: "pointer"
+    }
   }
 });
 

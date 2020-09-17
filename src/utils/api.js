@@ -7,6 +7,7 @@ const urls = {
     getTeamInfo: '/api/info/getTeamInfo',
     // Game
     newGame: '/api/game/newGame',
+    addToDraft: '/api/game/addToDraft',
     // PGA
     upcomingTournaments: '/api/pga/upcomingTournaments',
     // Socket Connection
@@ -19,6 +20,9 @@ const urls = {
     // Socket Publishers
     loadDraft: (draftId) => {
         return `/draft/loadDraft/${draftId}`;
+    },
+    draftPlayer: (draftId, playerId) => {
+        return `/draft/draftPlayer/${draftId}/${playerId}`;
     }
 };
 module.exports = urls;
