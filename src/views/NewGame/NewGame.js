@@ -158,7 +158,7 @@ const NewGame = () => {
   };
 
   const getTournamentsError = (error) => {
-    console.log(error);
+    console.log('Error: ', error);
   };
 
   const handleTournamentSelect = (event) => {
@@ -173,7 +173,6 @@ const NewGame = () => {
     const newData = Object.assign({}, formData);
     newData.draftDate = moment(date).format();
     updateFormData(newData);
-    console.log(formData);
   };
 
   const handleGameTypeChange = (event) => {
@@ -273,7 +272,6 @@ const NewGame = () => {
                         value={selectedDate}
                         onChange={handleDateChange}
                         label="Draft Date"
-                        onError={console.log}
                         format="yyyy/MM/dd hh:mm a"
                     />
                   </Grid>

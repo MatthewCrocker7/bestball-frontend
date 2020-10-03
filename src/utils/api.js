@@ -8,6 +8,7 @@ const urls = {
     // Game
     newGame: '/api/game/newGame',
     addToDraft: '/api/game/addToDraft',
+    loadGame: '/api/game/loadGame',
     // PGA
     upcomingTournaments: '/api/pga/upcomingTournaments',
     // Socket Connection

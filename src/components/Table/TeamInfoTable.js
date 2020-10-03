@@ -19,19 +19,14 @@ const TeamInfoTable = (props) => {
   const { tableHead, tableData, tableHeaderColor } = props;
 
   const handleRowSelect = (e, info) => {
-    // e.preventDefault();
-      //TODO: This is making a call for each row on page load
-    console.log(info);
     if (info.isDraft) {
-      // history.push(`/home/drafts/draft?draftId=${info.draftId}`);
       history.push(`/home/drafts/draft?draftId=${info.draftId}`,
           { draftId: info.draftId }
       );
     } else {
-      history.push({
-          pathname: `/home/games/game?gameId=${info.gameId}`,
-          state: info.gameId
-      });
+      history.push(`/home/games/game?gameId=${info.gameId}`,
+          { gameId: info.gameId }
+      );
     }
 
   };

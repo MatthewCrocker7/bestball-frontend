@@ -9,6 +9,7 @@ import UserProfile from "../views/UserProfile/UserProfile.js";
 import NotificationsPage from "../views/Notifications/Notifications.js";
 import NewGame from "../views/NewGame/NewGame.js";
 import DraftContainer from "../views/Drafts/DraftContainer";
+import GameContainer from "../views/Games/GameContainer";
 
 const dashboardRoutes = [
   {
@@ -22,7 +23,7 @@ const dashboardRoutes = [
     path: "/games",
     name: "Games",
     icon: "content_paste",
-    component: DraftContainer,
+    component: GameContainer,
     layout: "/home"
   },
   {

@@ -1,7 +1,7 @@
 import React from "react";
 // import { StickyContainer, Sticky } from 'react-sticky';
 import Sticky from 'react-sticky-el';
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { successColor } from "../../assets/jss/material-dashboard-react.js";
 
 import Cookies  from 'universal-cookie';
