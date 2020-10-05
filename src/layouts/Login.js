@@ -55,6 +55,7 @@ export default function Login() {
     const classes = useStyles();
     const history = useHistory();
     const [formData, updateFormData] = React.useState({});
+    const [userError, updateUserError] = React.useState();
 
     const handleChange = (e) => {
         const newData = Object.assign({}, formData);
@@ -75,8 +76,9 @@ export default function Login() {
     };
 
     const handleError = (error) => {
-        console.log('Error: ', error);
-        console.log(error.response);
+        if (error.response.status === 401) {
+            updateUserError("The email or password you entered was not correct.")
+        }
     };
 
     return (
@@ -90,42 +92,57 @@ export default function Login() {
                     Sign in
                 </Typography>
                 <form className={classes.form} noValidate onChange={handleChange} onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign In
-                    </Button>
                     <Grid container>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                            />
+                        </Grid>
+                        {userError &&
+                        <Grid item xs={12}>
+                            <Typography component="h5" variant="subtitle2" align="center" color="error">
+                                {userError}
+                            </Typography>
+                        </Grid>
+                        }
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Sign In
+                        </Button>
+                        </Grid>
                         <Grid item xs>
                             <Link href="#" variant="body2">
                                 Forgot password?
