@@ -34,20 +34,6 @@ const dashboardRoutes = [
     layout: "/home"
   },
   {
-    path: "/user",
-    name: "Profile",
-    icon: Person,
-    component: UserProfile,
-    layout: "/home"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/home"
-  },
-  {
     path: "/new-game",
     name: "New Game",
     icon: Unarchive,
