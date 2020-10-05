@@ -78,7 +78,6 @@ const Register = () => {
     };
 
     const handleError = (error) => {
-        console.log('Bad: ', error.response);
         if (error.response.data.exceptions) {
             checkErrors(error.response.data.exceptions);
         } else {
