@@ -48,10 +48,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+
 const Register = () => {
     const classes = useStyles();
     const history = useHistory();
     const [formData, updateFormData] = React.useState({});
+    const [emailError, updateEmailError] = React.useState();
+    const [userError, updateUserError] = React.useState();
+    const [passwordError, updatePasswordError] = React.useState();
+    const [confirmPasswordError, updateConfirmPasswordError] = React.useState();
 
     const handleChange = (e) => {
         const newData = Object.assign({}, formData);
@@ -72,7 +78,27 @@ const Register = () => {
     };
 
     const handleError = (error) => {
-        console.log('Error: ', error);
+        console.log('Bad: ', error.response);
+        if (error.response.data.exceptions) {
+            checkErrors(error.response.data.exceptions);
+        } else {
+            console.log('Unknown error found.');
+        }
+    };
+
+    const checkErrors = (errors) => {
+        if (errors.email) {
+            updateEmailError(errors.email.message);
+        }
+        if (errors.userName) {
+            updateUserError(errors.userName.message);
+        }
+        if (errors.password) {
+            updatePasswordError(errors.password.message);
+        }
+        if (errors.confirmPassword) {
+            updateConfirmPasswordError(errors.confirmPassword.message);
+        }
     };
 
     return (
@@ -126,6 +152,13 @@ const Register = () => {
                                 autoComplete="username"
                             />
                         </Grid>
+                        {userError &&
+                            <Grid item xs={12}>
+                                <Typography component="h5" variant="subtitle2" align="center" color="error">
+                                    {userError}
+                                </Typography>
+                            </Grid>
+                        }
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -137,6 +170,13 @@ const Register = () => {
                                 autoComplete="email"
                             />
                         </Grid>
+                        {emailError &&
+                            <Grid item xs={12}>
+                                <Typography component="h5" variant="subtitle2" align="center" color="error">
+                                    {emailError}
+                                </Typography>
+                            </Grid>
+                        }
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -149,6 +189,13 @@ const Register = () => {
                                 autoComplete="current-password"
                             />
                         </Grid>
+                        {passwordError &&
+                        <Grid item xs={12}>
+                            <Typography component="h5" variant="subtitle2" align="center" color="error">
+                                {passwordError}
+                            </Typography>
+                        </Grid>
+                        }
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -161,6 +208,13 @@ const Register = () => {
                                 autoComplete="current-password"
                             />
                         </Grid>
+                        {confirmPasswordError &&
+                        <Grid item xs={12}>
+                            <Typography component="h5" variant="subtitle2" align="center" color="error">
+                                {confirmPasswordError}
+                            </Typography>
+                        </Grid>
+                        }
                     </Grid>
                     <Button
                         type="submit"
