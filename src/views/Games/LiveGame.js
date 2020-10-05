@@ -332,6 +332,10 @@ const mapTeamRound = (team, round) => {
 const Round = (props) => {
     const { round, game } = props;
 
+    if (!game.courseHoles) {
+        return null;
+    }
+
     return (
         <GridContainer alignItems="center" spacing={0}>
             <GridItem xs={12} sm={12}>
