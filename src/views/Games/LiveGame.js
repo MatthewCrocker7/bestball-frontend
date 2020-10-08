@@ -236,6 +236,9 @@ const sortScores = (scores) => {
 };
 
 const getGolferRound = (golfer, roundNumber) => {
+    if (golfer.rounds.length === 0) {
+        return null;
+    }
     const round = golfer.rounds.filter(x => x.roundNumber === roundNumber)[0];
 
     if (!round || round.length === 0) {
