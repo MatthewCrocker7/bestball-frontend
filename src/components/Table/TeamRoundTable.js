@@ -19,6 +19,29 @@ const TeamRoundTable = (props) => {
   if (!tableData) return;
   if (!tableHead) return;
 
+  const determineClassName = (cell) => {
+    if (!cell.holeNumber) {
+        return classes.tableCell;
+    }
+
+    switch (cell.scoreType) {
+        case 'BIRDIE':
+            return classes.birdieCell;
+        case 'EAGLE':
+            return classes.eagleCell;
+        case 'BOGEY':
+            return classes.bogeyCell;
+        case 'DOUBLE_BOGEY':
+            return classes.doubleBogeyCell;
+        case 'TRIPLE_BOGEY':
+            return classes.doubleBogeyCell;
+        case 'PLUS_TRIPLE':
+            return classes.doubleBogeyCell;
+        default:
+            return classes.tableCell;
+    }
+  };
+
   return (
       <div className={classes.tableResponsive}>
         <Table className={classes.table}>
@@ -49,7 +72,7 @@ const TeamRoundTable = (props) => {
                       <TableRow key={key} className={classes.tableBodyRow}>
                         {row.map((cell, key) => {
                           return (
-                              <TableCell className={classes.tableCell} key={key} info={row} align="center">
+                              <TableCell className={determineClassName(cell)} key={key} info={row} align="center">
                                 {cell.holeNumber ? cell.strokes : cell}
                               </TableCell>
                           );

@@ -53,6 +53,42 @@ const tableStyle = theme => ({
     verticalAlign: "middle",
     fontSize: "0.8125rem"
   },
+  birdieCell: {
+    ...defaultFont,
+    lineHeight: "1.42857143",
+    padding: "12px 8px",
+    verticalAlign: "middle",
+    fontSize: "0.8125rem",
+    border: '3px solid #add8e6',
+    borderRadius: '50%',
+  },
+  eagleCell: {
+    ...defaultFont,
+    lineHeight: "1.42857143",
+    padding: "12px 8px",
+    verticalAlign: "middle",
+    fontSize: "0.8125rem",
+    border: '3px solid #add8e6',
+    borderRadius: '50%',
+    backgroundColor: '#add8e6'
+  },
+  bogeyCell: {
+    ...defaultFont,
+    lineHeight: "1.42857143",
+    padding: "12px 8px",
+    verticalAlign: "middle",
+    fontSize: "0.8125rem",
+    border: '3px solid #F99245',
+  },
+  doubleBogeyCell: {
+    ...defaultFont,
+    lineHeight: "1.42857143",
+    padding: "12px 8px",
+    verticalAlign: "middle",
+    fontSize: "0.8125rem",
+    border: '3px solid #F99245',
+    backgroundColor: '#F99245'
+  },
   tableResponsive: {
     width: "100%",
     marginTop: theme.spacing(3),
