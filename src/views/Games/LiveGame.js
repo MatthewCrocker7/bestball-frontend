@@ -294,7 +294,7 @@ const getPlayerRound = (team, roundNumber) => {
         sortedScores[6].strokes,
         sortedScores[7].strokes,
         sortedScores[8].strokes,
-        round.backNine,
+        round.frontNine,
         sortedScores[9].strokes,
         sortedScores[10].strokes,
         sortedScores[11].strokes,
@@ -304,7 +304,7 @@ const getPlayerRound = (team, roundNumber) => {
         sortedScores[15].strokes,
         sortedScores[16].strokes,
         sortedScores[17].strokes,
-        round.frontNine,
+        round.backNine,
         round.strokes,
         round.toPar
     ];
