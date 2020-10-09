@@ -42,7 +42,7 @@ const TeamRoundTable = (props) => {
     }
   };
 
-  const renderCell = (cell) => {
+  const renderCell = (cell, key) => {
       return (
           <TableCell key={key} info={row} align="center" className={determineClassName(cell)}>
               {cell.holeNumber ? cell.strokes : cell}
@@ -80,7 +80,7 @@ const TeamRoundTable = (props) => {
                       <TableRow key={key} className={classes.tableBodyRow}>
                         {row.map((cell, key) => {
                           return (
-                              renderCell(cell)
+                              renderCell(cell, key)
                           );
                         })}
                       </TableRow>
