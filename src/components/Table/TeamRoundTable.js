@@ -50,7 +50,7 @@ const TeamRoundTable = (props) => {
                         {row.map((cell, key) => {
                           return (
                               <TableCell className={classes.tableCell} key={key} info={row} align="center">
-                                {cell}
+                                {cell.holeNumber ? cell.strokes : cell}
                               </TableCell>
                           );
                         })}
