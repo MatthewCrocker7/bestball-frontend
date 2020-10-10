@@ -26,11 +26,11 @@ const TeamRoundTable = (props) => {
 
     switch (cell.scoreType) {
         case 'BIRDIE':
-            return classes.birdieCell;
+            return classes.eagleCell;
         case 'EAGLE':
             return classes.eagleCell;
         case 'BOGEY':
-            return classes.bogeyCell;
+            return classes.doubleBogeyCell;
         case 'DOUBLE_BOGEY':
             return classes.doubleBogeyCell;
         case 'TRIPLE_BOGEY':
