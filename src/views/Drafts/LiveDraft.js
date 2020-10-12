@@ -207,7 +207,7 @@ const NotStarted = (props) => {
     };
 
     const handleSuccess = (data, status) => {
-        console.log('Registration success!');
+        console.log('Added player to draft!');
 
     };
 

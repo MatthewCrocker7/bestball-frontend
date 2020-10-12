@@ -18,6 +18,9 @@ import TeamRoundTable from "../../components/Table/TeamRoundTable";
 import Table from "../../components/Table/DraftTable";
 import Grid from "@material-ui/core/Grid";
 import TeamSummaryTable from "../../components/Table/TeamSummaryTable";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField/TextField";
+import Button from "@material-ui/core/Button";
 
 const cookies = new Cookies();
 
@@ -104,6 +107,18 @@ const LiveGame = (props) => {
     const handleTabChange = (event, newValue) => {
         updateTabValue(newValue);
     };
+
+    if (!game) {
+        return (
+            <h1>Loading game</h1>
+        );
+    }
+
+    if (game.gameState === 'NOT_STARTED') {
+        return (
+          <h1>The draft for this game has not been completed</h1>
+        );
+    }
 
     return (
         <GridContainer>
@@ -219,7 +234,7 @@ const coursePar = (course, hole) => {
 };
 
 const mapGolfHeader = (game) => {
-    const course = game.tournamentSummary.tournamentCourses[0];
+    const course = game.tournament.tournamentCourses[0];
     return [
         ['Hole', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'Out', '10', '11', '12', '13', '14', '15', '16', '17', '18', 'In', 'Total', 'To Par'],
