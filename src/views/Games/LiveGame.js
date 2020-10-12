@@ -350,7 +350,7 @@ const mapTeamRound = (team, round) => {
 const Round = (props) => {
     const { round, game } = props;
 
-    if (!game.tournamentSummary.tournamentCourses) {
+    if (!game.tournament.tournamentCourses) {
         return null;
     }
 
