@@ -271,10 +271,11 @@ const DraftOrder = React.forwardRef((props, ref) => {
             <Typography component="h5" variant="h5" align="center" className={classes.font}>
                 Draft complete
             </Typography>
-        );
+        );0
     }
     const currentPick = draft.draftOrder[draft.currentPick];
-    const userTurn = (currentPick.email === email);
+    //TODO: make this to lower case
+    const userTurn = (currentPick.email.toLowerCase() === email.toLowerCase());
 
     return (
         <Grid container alignItems="center" spacing={3} className={classes.grid}>

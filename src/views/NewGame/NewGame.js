@@ -151,6 +151,8 @@ const NewGame = () => {
   }, []);
 
   const getTournamentsSuccess = (data, status) => {
+    console.log(data);
+    console.log(data.data[0]);
     setTournaments(data.data);
     const newData = Object.assign({}, formData);
     newData.tournamentId = data.data[0].tournamentId;
