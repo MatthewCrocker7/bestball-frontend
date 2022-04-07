@@ -283,14 +283,14 @@ const DraftOrder = React.forwardRef((props, ref) => {
                 <Typography component="h5" variant="h5" align="left" className={classes.font}>
                     Currently picking: {currentPick.userName}
                 </Typography>
-                { userTurn &&
+                { //userTurn && TEMP COMMENT OUT FOR DRAFT PROTECTION
                     <Typography component="h5" variant="h5" align="left" className={classes.font}>
                         Selected: {golfer.name}
                     </Typography>
                 }
             </Grid>
             <Grid item xs={12} sm={4}>
-                { userTurn &&
+                { //userTurn && TEMP COMMENT OUT
                     <Button variant="contained" size="large" className={classes.button} onClick={handleDraft}>Draft</Button>
                 }
             </Grid>
